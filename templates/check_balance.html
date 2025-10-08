@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Check Balance</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+<body>
+  <header class="navbar">
+    <div class="navbar-left">
+      <h1>BTMS: Easy Banking</h1>
+    </div>
+    <div class="navbar-right">
+      <a class="home-btn" href="{{ url_for('index') }}"><i class="fas fa-home"></i>Home</a>
+    </div>
+  </header>
+
+  <main class="container">
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, msg in messages %}
+      <div class="modal-overlay" id="flashModal">
+        <div class="modal-box {{ category }}">
+          <button class="close-btn" onclick="closeModal()">&times;</button>
+          <div class="icon">
+            {% if category == 'balance' %}
+              <i class="fas fa-wallet"></i>
+            {% elif category == 'success' %}
+              <i class="fas fa-check-circle"></i>
+            {% elif category == 'error' %}
+              <i class="fas fa-times-circle"></i>
+            {% else %}
+              <i class="fas fa-info-circle"></i>
+            {% endif %}
+          </div>
+
+          {% if category == 'balance' %}
+            <h3>Account Balance</h3>
+          {% elif category == 'success' %}
+            <h3>Success</h3>
+          {% elif category == 'error' %}
+            <h3>Error</h3>
+          {% else %}
+            <h3>Notice</h3>
+          {% endif %}
+
+          <p>{{ msg|safe }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+    <section class="form-card">
+      <h2>Check Balance</h2>
+
+      <form method="POST" class="styled-form">
+        <div class="form-group">
+          <label for="account_number">Account Number:</label>
+          <input type="text" id="account_number" name="account_number" required>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn primary">CHECK BALANCE</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 BTMS: Easy Banking. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function closeModal() {
+  const modal = document.getElementById("flashModal"); 
+  if (modal) modal.remove();
+}
+
+// Allow clicking outside to close
+document.addEventListener("click", e => {
+  const modal = document.getElementById("flashModal"); 
+  if (modal && e.target === modal) modal.remove();
+});
+
+  </script>
+</body>
+</html>
